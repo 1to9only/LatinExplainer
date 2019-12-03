@@ -91,6 +91,73 @@ public class SudokuIO {
         cellnum = 0;
         cluenum = 0;
 
+        if ( ( grpmax > 1 && grpmax <= 9 && cluecount > 81 ) ||
+             cluecount >= 729 ) {   // sukaku   // clue clue - cell clues, if count=9 then next cell
+            boolean prevchispad = true;         // clue pad  - next cell clues to follow
+            boolean chispad = true;             // pad  clue - cell clues follow
+            int cluecounter = 0;                // pad  pad  - consecutive pads are ignored
+
+            for (int i = 0; i < 81; i++) {
+                grid.setCellValue(i % 9, i / 9, 0);
+                Cell cell = grid.getCell(i % 9, i / 9);
+                cell.clearPotentialValues();
+                cell.resetGiven();
+            }
+            while ( cellnum < 81 && cluenum < linelen ) {
+                prevchispad = chispad;
+                ch = line.charAt(cluenum++);
+                chispad = true;
+                if (ch >= '1' && ch <= '9') {
+                    int value = ch - '0';
+                    Cell cell = grid.getCell(cellnum % 9, cellnum / 9);
+                    cell.addPotentialValue(value);
+                    chispad = false;
+                    cluecounter++;
+                    if ( cluecounter == 9 ) {
+                       cluecounter = 0;
+                       cellnum++;
+                    }
+                }
+                else
+                if (ch == '.' || ch == '0') {
+                    chispad = false;
+                    cluecounter++;
+                    if ( cluecounter == 9 ) {
+                       cluecounter = 0;
+                       cellnum++;
+                    }
+                }
+                if ( chispad == true && prevchispad == false && cluecounter != 0 ) {
+                   cluecounter = 0;
+                   cellnum++;
+                }
+            }
+            if ( cellnum == 81 ) {
+                // fix naked singles
+                for (int i = 0; i < 81; i++) {
+                    Cell cell = grid.getCell(i % 9, i / 9);
+                    if ( cell.getPotentialValues().cardinality() == 1 ) {
+                        int singleclue = cell.getPotentialValues().nextSetBit(0);
+                        boolean isnakedsingle = true;
+                        for (Cell housecell : cell.getHouseCells()) {
+                            if ( housecell.hasPotentialValue(singleclue) ) {
+                                isnakedsingle = false;
+                                break;
+                            }
+                        }
+                        if ( isnakedsingle )
+                        {
+                            cell.setValue( singleclue);
+                            cell.clearPotentialValues();
+                            cell.setGiven();
+                        }
+                    }
+                }
+                grid.setPencilMarks();
+            }
+            return ( cellnum==81 ? RES_OK : RES_WARN);
+        }
+
         if ( cluecount >= 81 ) { // sudoku
             while ( cellnum < 81 && cluenum < linelen ) {
                 ch = line.charAt(cluenum++);

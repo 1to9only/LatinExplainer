@@ -488,7 +488,10 @@ public class SudokuExplainer {
         clearGrid();
         ErrorMessage message = SudokuIO.loadFromClipboard(grid);
         if (message == null || !message.isFatal()) {
-            solver.rebuildPotentialValues();
+            if ( grid.isSudoku() == 1 )
+            {
+                solver.rebuildPotentialValues();
+            }
             gridStack = new Stack<Grid>();
         }
         else {
@@ -509,7 +512,10 @@ public class SudokuExplainer {
         clearGrid();
         ErrorMessage message = SudokuIO.loadFromFile(grid, file);
         if (message == null || !message.isFatal()) {
-            solver.rebuildPotentialValues();
+            if ( grid.isSudoku() == 1 )
+            {
+                solver.rebuildPotentialValues();
+            }
             gridStack = new Stack<Grid>();
         }
         else {

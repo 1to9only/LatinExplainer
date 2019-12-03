@@ -30,6 +30,7 @@ public class Grid {
     private Column[] columns = new Column[9];
 //  private Block[] blocks = new Block[9];
 
+    private int isSudoku;  // 1=isSudoku (default), 0=isPencilMarks (set when pencilmarks loaded)
 
     /**
      * Create a new 9x9 Sudoku grid. All cells are set to empty
@@ -46,6 +47,15 @@ public class Grid {
             columns[i] = new Column(i);
 //          blocks[i] = new Block(i / 3, i % 3);
         }
+        isSudoku = 1;
+    }
+
+    public int isSudoku() {
+        return this.isSudoku;
+    }
+
+    public void setPencilMarks() {
+        this.isSudoku = 0;
     }
 
     /**
