@@ -64,7 +64,7 @@ public class GenerateDialog extends JDialog {
 
     private EnumSet<Symmetry> symmetries = EnumSet.noneOf(Symmetry.class);
     private Difficulty difficulty = Difficulty.Diabolical;
-    private boolean isExact = true;
+    private boolean isExact = false;
 
     private GeneratorThread generator = null;
     private List<Grid> sudokuList = new ArrayList<Grid>();
@@ -257,7 +257,7 @@ public class GenerateDialog extends JDialog {
         ButtonGroup group = new ButtonGroup();
         group.add(chkExactDifficulty);
         group.add(chkMaximumDifficulty);
-        chkExactDifficulty.setSelected(true);
+        chkMaximumDifficulty.setSelected(true);
 
         JPanel pnlDifficulty = new JPanel();
         pnlDifficulty.setLayout(new BorderLayout());
@@ -297,7 +297,7 @@ public class GenerateDialog extends JDialog {
             }
         });
         optionPanel.add(chkAnalysis);
-//      chkAnalysis.setSelected(true);
+        chkAnalysis.setSelected(false);
     }
 
     private void generate() {
