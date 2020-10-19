@@ -1,4 +1,6 @@
 # LatinExplainer
+##### Development of the this program is stopped.
+##### Instead the code will be integrated into my own version of SukakuExplainer: https://github.com/1to9only/SukakuExplainer.
 
 LatinExplainer is my modifications to SudokuExplainer to solve 9x9 latin squares.
 
